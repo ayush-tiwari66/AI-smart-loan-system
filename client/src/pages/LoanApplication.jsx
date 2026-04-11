@@ -39,7 +39,12 @@ export default function LoanApplication() {
     if (step === 1) {
       if (!form.full_name.trim()) errs.full_name = 'Required';
       if (!form.age || form.age < 18 || form.age > 70) errs.age = 'Age must be 18-70';
-      if (!form.phone.trim()) errs.phone = 'Required';
+      const digits = form.phone.replace(/\D/g, '');
+      if (!form.phone.trim()) {
+        errs.phone = 'Required';
+      } else if (digits.length < 10) {
+        errs.phone = 'Valid 10-digit phone number required';
+      }
       if (!form.pan_number.trim() || form.pan_number.length !== 10) errs.pan_number = 'Valid 10-digit PAN required';
     } else if (step === 2) {
       if (!form.annual_income || form.annual_income <= 0) errs.annual_income = 'Required';
